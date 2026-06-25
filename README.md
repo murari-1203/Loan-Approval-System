@@ -1,18 +1,18 @@
 # CreditWise Loan Approval System
 
-A Machine Learning project that predicts whether a loan application should be **Approved** or **Rejected** using applicant financial, demographic, and credit information. The goal is to assist financial institutions in making faster, consistent, and data-driven lending decisions based on historical loan records.
+A Machine Learning project that predicts whether a loan application should be **Approved** or **Rejected** using applicant financial, demographic, and credit information. The system learns patterns from historical loan records to assist financial institutions in making faster, consistent, and data-driven lending decisions.
 
 ---
 
-## Project Overview
+# Project Overview
 
-Traditional loan approval relies on manual verification of customer information, making the process slow and prone to inconsistencies. This project builds a classification model that learns patterns from previous loan applications and predicts loan approval for new applicants.
+Traditional loan approval relies on manual verification of customer details, making the process time-consuming and susceptible to inconsistencies. This project automates the decision-making process by training a **Gaussian Naive Bayes** classifier on historical loan application data.
 
 ---
 
-## Dataset
+# Dataset
 
-The dataset contains applicant information such as:
+Each record represents a loan applicant with features including:
 
 * Applicant & Co-applicant Income
 * Employment Status
@@ -21,7 +21,7 @@ The dataset contains applicant information such as:
 * Number of Dependents
 * Credit Score
 * Existing Loans
-* Debt-to-Income Ratio
+* Debt-to-Income Ratio (DTI)
 * Savings
 * Collateral Value
 * Loan Amount
@@ -39,9 +39,9 @@ The dataset contains applicant information such as:
 
 ---
 
-## Project Workflow
+# Project Workflow
 
-```
+```text
 Raw Dataset
       │
       ▼
@@ -66,34 +66,45 @@ Feature Standardization
 Gaussian Naive Bayes
       │
       ▼
-Model Evaluation
+Performance Evaluation
 ```
 
 ---
 
-# Mathematical Concepts
+# Mathematical Foundations
 
-## Missing Value Imputation
+## 1. Missing Value Imputation
 
 ### Mean Imputation
 
-Missing numerical values are replaced by the arithmetic mean of the feature.
+Missing numerical values are replaced with the arithmetic mean of the feature.
 
-**x̄ = (1/n) Σxᵢ**
+$$
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i
+$$
 
-This preserves the central tendency of the data.
+Each missing value is replaced as
+
+$$
+x_{\text{missing}}=\bar{x}
+$$
 
 ### Most Frequent Imputation
 
-Missing categorical values are replaced by the most frequently occurring category (Mode).
+Missing categorical values are replaced using the mode, i.e., the category with the highest frequency.
 
 ---
 
-## Correlation
+## 2. Correlation Analysis
 
-Feature relationships are measured using the **Pearson Correlation Coefficient**.
+Relationships between numerical features are measured using the **Pearson Correlation Coefficient**.
 
-**r = Cov(X,Y) / (σₓσᵧ)**
+$$
+r=
+\frac{\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}
+{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2}
+\sqrt{\sum_{i=1}^{n}(y_i-\bar{y})^2}}
+$$
 
 where
 
@@ -101,60 +112,112 @@ where
 * **r = 0** → No Linear Correlation
 * **r = -1** → Perfect Negative Correlation
 
-Correlation analysis helps understand how strongly variables are related.
-
 ---
 
-## Feature Standardization
+## 3. Feature Standardization
 
 Features are transformed to have zero mean and unit variance.
 
-**z = (x − μ) / σ**
+$$
+z=\frac{x-\mu}{\sigma}
+$$
 
 where
 
 * **μ** = Mean
 * **σ** = Standard Deviation
 
-Standardization ensures all features contribute on a comparable scale.
+Standardization ensures all features are on a comparable scale before training.
 
 ---
 
-## Gaussian Naive Bayes
+## 4. Gaussian Naive Bayes
 
 The classifier is based on **Bayes' Theorem**.
 
-**P(C│X) = [P(X│C) × P(C)] / P(X)**
+$$
+P(C|X)=\frac{P(X|C)P(C)}{P(X)}
+$$
 
 where
 
-* **P(C)** = Prior Probability
-* **P(X│C)** = Likelihood
-* **P(C│X)** = Posterior Probability
+* $P(C)$ = Prior Probability
+* $P(X|C)$ = Likelihood
+* $P(C|X)$ = Posterior Probability
 
-Naive Bayes assumes that all input features are conditionally independent given the target class.
+### Conditional Independence
 
-For continuous features, the likelihood is modeled using the Gaussian distribution:
+Naive Bayes assumes that features are conditionally independent given the target class.
 
-**P(x│C) = (1 / √(2πσ²)) · e^(-(x−μ)² / 2σ²)**
+$$
+P(X|C)=\prod_{i=1}^{n}P(x_i|C)
+$$
+
+### Gaussian Distribution
+
+For continuous features, the likelihood is modeled using a Gaussian (Normal) distribution.
+
+$$
+P(x|C)=
+\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\left(
+-\frac{(x-\mu)^2}{2\sigma^2}
+\right)
+$$
+
+The class with the highest posterior probability is selected as the prediction.
 
 ---
 
-## Model Evaluation
+# Model Evaluation
 
-The classifier is evaluated using:
+The trained classifier is evaluated using standard classification metrics.
 
-* Accuracy
-* Precision
-* Recall
-* F1-Score
-* Confusion Matrix
+### Accuracy
 
-These metrics measure the overall predictive performance and classification quality of the model.
+$$
+\text{Accuracy}=
+\frac{TP+TN}
+{TP+TN+FP+FN}
+$$
+
+### Precision
+
+$$
+\text{Precision}=
+\frac{TP}
+{TP+FP}
+$$
+
+### Recall
+
+$$
+\text{Recall}=
+\frac{TP}
+{TP+FN}
+$$
+
+### F1-Score
+
+$$
+F_1=
+2\cdot
+\frac{\text{Precision}\times\text{Recall}}
+{\text{Precision}+\text{Recall}}
+$$
+
+### Confusion Matrix
+
+The confusion matrix summarizes the model's predictions into:
+
+* **True Positives (TP)**
+* **True Negatives (TN)**
+* **False Positives (FP)**
+* **False Negatives (FN)**
 
 ---
 
-## Technologies Used
+# Technologies Used
 
 * Python
 * NumPy
@@ -166,6 +229,8 @@ These metrics measure the overall predictive performance and classification qual
 ---
 
 
-## Conclusion
 
-This project demonstrates a complete machine learning pipeline for loan approval prediction, covering data preprocessing, statistical analysis, feature scaling, probabilistic classification using Gaussian Naive Bayes, and performance evaluation. It highlights how mathematical concepts and machine learning can be applied to automate financial decision-making.
+
+# Conclusion
+
+This project presents an end-to-end machine learning pipeline for loan approval prediction. From data preprocessing and statistical analysis to probabilistic classification using Gaussian Naive Bayes, it demonstrates how mathematical principles and machine learning techniques can be combined to automate loan approval decisions efficiently and consistently.
